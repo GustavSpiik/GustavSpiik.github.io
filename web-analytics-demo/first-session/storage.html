@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SessionStorage Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--
+        README:
+        This page demonstrates using sessionStorage with dataLayer.
+        1. Add GTM script in the <head>
+        2. Form saves data to sessionStorage
+        3. Retrieve button loads data and pushes to dataLayer
+        4. Use GTM to track storage events
+    -->
+</head>
+<body>
+    <div class="container">
+        <h1>SessionStorage Demo</h1>
+        <form id="storageForm" onsubmit="saveToStorage(event)">
+            <input type="text" name="data" placeholder="Enter some data" required>
+            <button type="submit">Save</button>
+        </form>
+        <button onclick="retrieveFromStorage()">Retrieve</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        
+        function saveToStorage(event) {
+            event.preventDefault();
+            const data = event.target.data.value;
+            sessionStorage.setItem('demoData', data);
+            window.dataLayer.push({
+                'event': 'data_saved',
+                'stored_value': data
+            });
+            document.getElementById('result').textContent = 'Data saved!';
+        }
+
+        function retrieveFromStorage() {
+            const data = sessionStorage.getItem('demoData');
+            document.getElementById('result').textContent = data ? `Retrieved: ${data}` : 'No data found';
+            if (data) {
+                window.dataLayer.push({
+                    'event': 'data_retrieved',
+                    'retrieved_value': data
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- Exercise 3: Using Query Parameters with Form Submission -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exercise 3: Form with Query Parameters</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for existing query parameters on page load
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if(urlParams.has('source')) {
+                const source = urlParams.get('source');
+                document.getElementById('campaign-heading').innerText = 
+                    `Welcome from ${source} campaign!`;
+                
+                // Track the source in dataLayer
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'campaignLanding',
+                    'campaignSource': source
+                });
+            }
+            
+            // Set up form to add query parameters
+            document.getElementById('source-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const sourceValue = document.getElementById('source-input').value;
+                
+                // Create new URL with the form value as query parameter
+                const newUrl = window.location.pathname + '?source=' + encodeURIComponent(sourceValue);
+                window.location.href = newUrl;
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1 id="campaign-heading">Campaign Landing Page</h1>
+    
+    <form id="source-form">
+        <label for="source-input">Enter campaign source:</label>
+        <input type="text" id="source-input" placeholder="e.g., email, social, ads">
+        <button type="submit">Submit</button>
+    </form>
+    
+    <p>This will reload the page with your source as a query parameter</p>
+</body>
+</html>

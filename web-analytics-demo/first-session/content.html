@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Content Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--
+        README:
+        This page demonstrates modifying content based on query params.
+        1. Add GTM script in the <head>
+        2. Use URL like ?content=hello to change the content
+        3. Push content changes to dataLayer
+        4. Use GTM to track content modifications
+    -->
+</head>
+<body>
+    <div class="container">
+        <h1 id="dynamicHeadline">Default Headline</h1>
+        <p id="dynamicText">Default content goes here.</p>
+    </div>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const content = getQueryParam('content');
+        if (content) {
+            document.getElementById('dynamicHeadline').textContent = content;
+            document.getElementById('dynamicText').textContent = `Content updated based on query param: ${content}`;
+            
+            window.dataLayer.push({
+                'event': 'content_update',
+                'content_value': content
+            });
+        }
+    </script>
+</body>
+</html>

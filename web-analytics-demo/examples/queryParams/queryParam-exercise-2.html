@@ -1,0 +1,38 @@
+<!-- Exercise 2: Multiple Query Parameters -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exercise 2: Multiple Query Parameters</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productName = urlParams.get('product') || 'Product';
+            const productColor = urlParams.get('color') || 'Default';
+            
+            // Update H1 with both parameters
+            if(urlParams.has('product') || urlParams.has('color')) {
+                document.getElementById('product-heading').innerText = 
+                    `${productName} - ${productColor}`;
+                
+                // Initialize dataLayer
+                window.dataLayer = window.dataLayer || [];
+                
+                // Push product details to dataLayer
+                window.dataLayer.push({
+                    'event': 'productView',
+                    'productInfo': {
+                        'name': productName,
+                        'color': productColor
+                    }
+                });
+                
+                console.log('Product dataLayer:', window.dataLayer);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1 id="product-heading">Product Information</h1>
+    <p>Try adding ?product=Laptop&color=Silver to the URL</p>
+</body>
+</html>

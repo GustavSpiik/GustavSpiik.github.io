@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataLayer Form Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--
+        README:
+        This page demonstrates collecting and hashing form data.
+        1. Add GTM script in the <head>
+        2. Form submission pushes user_data to dataLayer
+        3. Includes a simple hash function for email
+        4. Use GTM to capture form submission events
+    -->
+</head>
+<body>
+    <div class="container">
+        <h1>Form Data Demo</h1>
+        <form id="userForm" onsubmit="handleSubmit(event)">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="name" placeholder="Name" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash;
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const email = form.email.value;
+            const name = form.name.value;
+            
+            window.dataLayer.push({
+                'event': 'form_submission',
+                'user_data': {
+                    'email_hashed': simpleHash(email),
+                    'name': name
+                }
+            });
+            console.log('Form data pushed to dataLayer');
+        }
+    </script>
+</body>
+</html>

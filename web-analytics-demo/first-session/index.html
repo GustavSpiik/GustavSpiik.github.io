@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataLayer Buttons Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--
+        README:
+        This page demonstrates pushing events to the dataLayer.
+        1. Add GTM script in the <head> (students will do this)
+        2. Use the buttons to trigger dataLayer.push() events
+        3. Each button will push a different event type
+        4. Use GTM to track these events
+    -->
+</head>
+<body>
+    <div class="container">
+        <h1>DataLayer Events Demo</h1>
+        <div class="button-group">
+            <button onclick="pushEvent('click_button1')">Button 1</button>
+            <button onclick="pushEvent('click_button2')">Button 2</button>
+            <button onclick="pushEvent('click_button3')">Button 3</button>
+        </div>
+    </div>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        
+        function pushEvent(eventName) {
+            window.dataLayer.push({
+                'event': eventName,
+                'timestamp': new Date().toISOString()
+            });
+            console.log(`Pushed ${eventName} to dataLayer`);
+        }
+    </script>
+</body>
+</html>

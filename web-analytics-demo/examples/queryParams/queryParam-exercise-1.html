@@ -1,0 +1,39 @@
+<!-- Exercise 1: Basic Query Parameter Extraction and H1 Update -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exercise 1: Basic Query Parameter</title>
+    <script>
+        // Wait until DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the URL query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Check if 'name' parameter exists
+            if(urlParams.has('name')) {
+                // Get the value of 'name' parameter
+                const nameValue = urlParams.get('name');
+                
+                // Update the H1 element
+                document.getElementById('heading').innerText = 'Hello, ' + nameValue + '!';
+                
+                // Initialize dataLayer if it doesn't exist
+                window.dataLayer = window.dataLayer || [];
+                
+                // Push the parameter to dataLayer
+                window.dataLayer.push({
+                    'event': 'parameterLoaded',
+                    'visitorName': nameValue
+                });
+                
+                // Log to console for debugging
+                console.log('DataLayer updated:', window.dataLayer);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1 id="heading">Hello, Visitor!</h1>
+    <p>Try adding ?name=YourName to the URL</p>
+</body>
+</html>

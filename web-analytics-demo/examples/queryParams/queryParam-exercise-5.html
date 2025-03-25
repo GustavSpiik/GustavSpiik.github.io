@@ -1,0 +1,81 @@
+<!-- Exercise 5: Advanced - Query Parameters for Dynamic Content Loading -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exercise 5: Dynamic Content Loading</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageId = urlParams.get('page') || 'home';
+            const referrer = urlParams.get('ref') || 'direct';
+            
+            // Update the page heading based on the page parameter
+            const pageHeading = document.getElementById('page-heading');
+            
+            // Content mapping
+            const pageContent = {
+                'home': {
+                    title: 'Welcome to our Homepage',
+                    content: 'This is the main page content.'
+                },
+                'about': {
+                    title: 'About Our Company',
+                    content: 'Learn more about what we do.'
+                },
+                'contact': {
+                    title: 'Contact Us Today',
+                    content: 'Reach out to our team.'
+                }
+            };
+            
+            // Set the page content based on the page parameter
+            if(pageContent[pageId]) {
+                pageHeading.innerText = pageContent[pageId].title;
+                document.getElementById('content-area').innerText = pageContent[pageId].content;
+            } else {
+                pageHeading.innerText = 'Page Not Found';
+                document.getElementById('content-area').innerText = 'The requested page does not exist.';
+            }
+            
+            // Add navigation links with query parameters
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                const page = link.getAttribute('data-page');
+                link.href = `?page=${page}&ref=navigation`;
+            });
+            
+            // Track page view in dataLayer with detailed information
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'virtualPageview',
+                'pageDetails': {
+                    'pageId': pageId,
+                    'referrer': referrer,
+                    'timestamp': new Date().toISOString()
+                }
+            });
+            
+            console.log('Page dataLayer:', window.dataLayer);
+        });
+    </script>
+    <style>
+        nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="?page=home&ref=navigation" class="nav-link" data-page="home">Home</a>
+        <a href="?page=about&ref=navigation" class="nav-link" data-page="about">About</a>
+        <a href="?page=contact&ref=navigation" class="nav-link" data-page="contact">Contact</a>
+    </nav>
+    
+    <h1 id="page-heading">Welcome</h1>
+    <div id="content-area">Loading content...</div>
+    
+    <p>Try adding ?page=about&ref=example to the URL</p>
+</body>
+</html>

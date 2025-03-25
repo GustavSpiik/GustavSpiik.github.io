@@ -1,0 +1,54 @@
+<!-- Exercise 4: Query Parameters for Page Customization -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exercise 4: Page Customization</title>
+    <style>
+        .dark-theme {
+            background-color: #333;
+            color: #fff;
+        }
+        .light-theme {
+            background-color: #fff;
+            color: #333;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const theme = urlParams.get('theme') || 'light';
+            const userName = urlParams.get('user') || 'Guest';
+            
+            // Update the document body class based on theme parameter
+            document.body.className = theme + '-theme';
+            
+            // Update H1 with user parameter
+            document.getElementById('welcome-heading').innerText = 
+                `Welcome, ${userName}!`;
+            
+            // Track page customization in dataLayer
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'pageCustomization',
+                'pageSettings': {
+                    'theme': theme,
+                    'userName': userName
+                }
+            });
+            
+            // Add theme toggle functionality
+            document.getElementById('theme-toggle').addEventListener('click', function() {
+                const newTheme = theme === 'light' ? 'dark' : 'light';
+                const newUrl = window.location.pathname + 
+                    `?theme=${newTheme}&user=${encodeURIComponent(userName)}`;
+                window.location.href = newUrl;
+            });
+        });
+    </script>
+</head>
+<body class="light-theme">
+    <h1 id="welcome-heading">Welcome!</h1>
+    <button id="theme-toggle">Toggle Theme</button>
+    <p>Try adding ?theme=dark&user=YourName to the URL</p>
+</body>
+</html>

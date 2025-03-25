@@ -243,6 +243,221 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Checkout styles */
+#checkout {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+#checkout h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
+
+.checkout-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.checkout-progress::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ddd;
+    z-index: 1;
+}
+
+.progress-step {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+}
+
+.progress-step.active {
+    color: #4CAF50;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.progress-step.active .step-number {
+    background: #4CAF50;
+    color: white;
+}
+
+.step-text {
+    font-size: 0.9rem;
+}
+
+.checkout-step {
+    display: none;
+    background: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-step.active {
+    display: block;
+}
+
+.checkout-step h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+/* Cart styles */
+.cart-items {
+    margin-bottom: 1.5rem;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.product-name {
+    flex: 1;
+}
+
+.product-price {
+    margin: 0 1rem;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.remove-item {
+    padding: 0.5rem 1rem;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-item:hover {
+    background: #cc0000;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.next-step {
+    width: 100%;
+    padding: 1rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.next-step:hover {
+    background: #45a049;
+}
+
+/* Confirmation styles */
+.confirmation-details {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.confirmation-details p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+#order-number {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.back-to-home {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-home:hover {
+    background: #45a049;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     nav ul {
@@ -274,5 +489,23 @@ footer {
     #event-filter {
         width: 100%;
         max-width: 300px;
+    }
+
+    .checkout-progress {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .checkout-progress::before {
+        display: none;
+    }
+
+    .progress-step {
+        margin-bottom: 1rem;
+        padding: 0;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
     }
 } 

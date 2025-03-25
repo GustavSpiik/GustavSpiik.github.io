@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5FJBZQDR');</script>
+    <!-- End Google Tag Manager -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kassa - Web Analytics Demo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/analytics.js"></script>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FJBZQDR"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header>
+        <h1>Web Analytics Demo</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" id="home-link">Hem</a></li>
+                <li><a href="#" id="products-link">Produkter</a></li>
+                <li><a href="#" id="about-link">Om oss</a></li>
+                <li><a href="#" id="contact-link">Kontakt</a></li>
+                <li><a href="tetris.html" id="tetris-link">Tetris</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="checkout">
+            <h2>Kassa</h2>
+            <div class="checkout-progress">
+                <div class="progress-step active" id="step-1">
+                    <span class="step-number">1</span>
+                    <span class="step-text">Kundvagn</span>
+                </div>
+                <div class="progress-step" id="step-2">
+                    <span class="step-number">2</span>
+                    <span class="step-text">Leverans</span>
+                </div>
+                <div class="progress-step" id="step-3">
+                    <span class="step-number">3</span>
+                    <span class="step-text">Betalning</span>
+                </div>
+                <div class="progress-step" id="step-4">
+                    <span class="step-number">4</span>
+                    <span class="step-text">Bekräftelse</span>
+                </div>
+            </div>
+
+            <div class="checkout-content">
+                <!-- Step 1: Cart -->
+                <div class="checkout-step active" id="cart-step">
+                    <h3>Din kundvagn</h3>
+                    <div class="cart-items">
+                        <div class="cart-item" data-product-id="123" data-product-name="Produkt A" data-product-price="19.99">
+                            <span class="product-name">Produkt A</span>
+                            <span class="product-price">199 kr</span>
+                            <button class="remove-item">Ta bort</button>
+                        </div>
+                        <div class="cart-item" data-product-id="456" data-product-name="Produkt B" data-product-price="29.99">
+                            <span class="product-name">Produkt B</span>
+                            <span class="product-price">299 kr</span>
+                            <button class="remove-item">Ta bort</button>
+                        </div>
+                    </div>
+                    <div class="cart-total">
+                        <span>Totalt:</span>
+                        <span>498 kr</span>
+                    </div>
+                    <button class="next-step" onclick="nextStep(1)">Fortsätt till leverans</button>
+                </div>
+
+                <!-- Step 2: Delivery -->
+                <div class="checkout-step" id="delivery-step">
+                    <h3>Leveransinformation</h3>
+                    <form id="delivery-form">
+                        <div class="form-group">
+                            <label for="name">Namn</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-post</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Adress</label>
+                            <textarea id="address" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal">Postnummer</label>
+                            <input type="text" id="postal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Stad</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <button type="submit" class="next-step">Fortsätt till betalning</button>
+                    </form>
+                </div>
+
+                <!-- Step 3: Payment -->
+                <div class="checkout-step" id="payment-step">
+                    <h3>Betalning</h3>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="card-number">Kortnummer</label>
+                            <input type="text" id="card-number" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expiry">Utgångsdatum</label>
+                                <input type="text" id="expiry" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="next-step">Slutför köp</button>
+                    </form>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="checkout-step" id="confirmation-step">
+                    <h3>Tack för ditt köp!</h3>
+                    <div class="confirmation-details">
+                        <p>Ditt ordernummer är: <span id="order-number"></span></p>
+                        <p>En bekräftelse har skickats till din e-postadress.</p>
+                    </div>
+                    <a href="index.html" class="back-to-home">Tillbaka till startsidan</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Web Analytics Demo</p>
+    </footer>
+
+    <script>
+        // Checkout tracking
+        function trackCheckoutStep(step, data = {}) {
+            pushToDataLayer('checkout_step', {
+                step_number: step,
+                step_name: ['cart', 'delivery', 'payment', 'confirmation'][step - 1],
+                ...data
+            });
+        }
+
+        function nextStep(currentStep) {
+            const steps = document.querySelectorAll('.checkout-step');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            
+            // Track step completion
+            if (currentStep < 4) {
+                trackCheckoutStep(currentStep);
+            }
+            
+            // Update UI
+            steps[currentStep - 1].classList.remove('active');
+            steps[currentStep].classList.add('active');
+            progressSteps[currentStep - 1].classList.remove('active');
+            progressSteps[currentStep].classList.add('active');
+        }
+
+        // Form submission handlers
+        document.getElementById('delivery-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const deliveryData = {};
+            formData.forEach((value, key) => {
+                deliveryData[key] = value;
+            });
+            
+            trackCheckoutStep(2, {
+                delivery_info: deliveryData
+            });
+            
+            nextStep(2);
+        });
+
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const paymentData = {};
+            formData.forEach((value, key) => {
+                paymentData[key] = value;
+            });
+            
+            // Generate order number
+            const orderNumber = 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            document.getElementById('order-number').textContent = orderNumber;
+            
+            trackCheckoutStep(3, {
+                payment_info: paymentData,
+                order_number: orderNumber
+            });
+            
+            // Track purchase
+            pushToDataLayer('purchase', {
+                transaction_id: orderNumber,
+                value: 498,
+                currency: 'SEK',
+                items: [
+                    {
+                        item_id: '123',
+                        item_name: 'Produkt A',
+                        price: 199,
+                        quantity: 1
+                    },
+                    {
+                        item_id: '456',
+                        item_name: 'Produkt B',
+                        price: 299,
+                        quantity: 1
+                    }
+                ]
+            });
+            
+            nextStep(3);
+        });
+
+        // Track cart modifications
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const item = this.closest('.cart-item');
+                pushToDataLayer('remove_from_cart', {
+                    product_id: item.dataset.productId,
+                    product_name: item.dataset.productName,
+                    product_price: parseFloat(item.dataset.productPrice)
+                });
+                item.remove();
+            });
+        });
+
+        // Initial step tracking
+        trackCheckoutStep(1);
+    </script>
+</body>
+</html> 

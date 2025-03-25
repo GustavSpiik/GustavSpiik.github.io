@@ -59,6 +59,25 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // Spåra formulärinskickningar
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Förhindra faktisk inskickning för demo
+            
+            const formData = new FormData(this);
+            const formValues = {};
+            formData.forEach((value, key) => {
+                formValues[key] = value;
+            });
+            
+            pushToDataLayer('form_submission', {
+                form_id: this.id || 'unnamed_form',
+                form_name: this.name || 'unnamed_form',
+                form_values: formValues
+            });
+        });
+    });
 });
 
 // Exempel på hur man kommer åt dataLayer-data
@@ -82,21 +101,26 @@ engagementEvents.forEach(eventType => {
     });
 });
 
-// Track scroll depth
-let maxScroll = 0;
+// Enhanced scroll depth tracking
+let scrollThresholds = [25, 50, 75, 100];
+let reachedThresholds = new Set();
+
 window.addEventListener('scroll', () => {
     const scrollPercent = Math.round(
         (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100
     );
     
-    if (scrollPercent > maxScroll) {
-        maxScroll = scrollPercent;
-        if (maxScroll % 25 === 0) { // Track at 25%, 50%, 75%, 100%
+    scrollThresholds.forEach(threshold => {
+        if (scrollPercent >= threshold && !reachedThresholds.has(threshold)) {
+            reachedThresholds.add(threshold);
             pushToDataLayer('scroll_depth', {
-                'scroll_percentage': maxScroll
+                'scroll_percentage': threshold,
+                'current_position': window.scrollY,
+                'total_height': document.documentElement.scrollHeight,
+                'viewport_height': window.innerHeight
             });
         }
-    }
+    });
 });
 
 // Track time on page when user leaves
@@ -104,6 +128,7 @@ let pageLoadTime = new Date().getTime();
 window.addEventListener('beforeunload', () => {
     const timeOnPage = Math.round((new Date().getTime() - pageLoadTime) / 1000);
     pushToDataLayer('page_exit', {
-        'time_on_page_seconds': timeOnPage
+        'time_on_page_seconds': timeOnPage,
+        'max_scroll_depth': Math.max(...Array.from(reachedThresholds))
     });
 }); 

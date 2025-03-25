@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Analytics Demo</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/analytics.js"></script>
 </head>
 <body>
@@ -62,10 +63,101 @@
                 </div>
             </div>
         </section>
+
+        <section id="analytics-dashboard">
+            <h2>Analytics Dashboard</h2>
+            <div class="dashboard-controls">
+                <select id="event-filter">
+                    <option value="all">Alla händelser</option>
+                    <option value="page_view">Sidvisningar</option>
+                    <option value="navigation_click">Navigationsklick</option>
+                    <option value="cta_click">CTA-klick</option>
+                    <option value="add_to_cart">Kundvagn</option>
+                    <option value="form_submission">Formulär</option>
+                    <option value="scroll_depth">Scroll-djup</option>
+                    <option value="user_engagement">Användarinteraktioner</option>
+                </select>
+                <button id="refresh-dashboard">Uppdatera</button>
+            </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Händelsefrekvens</h3>
+                    <canvas id="event-chart"></canvas>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Senaste händelser</h3>
+                    <div id="event-list"></div>
+                </div>
+            </div>
+        </section>
     </main>
     
     <footer>
         <p>&copy; 2025 Web Analytics Demo</p>
     </footer>
+
+    <script>
+        // Dashboard functionality
+        let eventChart = null;
+
+        function updateDashboard() {
+            const filterValue = document.getElementById('event-filter').value;
+            const filteredEvents = filterValue === 'all' 
+                ? window.dataLayer 
+                : window.dataLayer.filter(event => event.event === filterValue);
+
+            // Update chart
+            const eventCounts = {};
+            filteredEvents.forEach(event => {
+                eventCounts[event.event] = (eventCounts[event.event] || 0) + 1;
+            });
+
+            if (eventChart) {
+                eventChart.destroy();
+            }
+
+            const ctx = document.getElementById('event-chart').getContext('2d');
+            eventChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(eventCounts),
+                    datasets: [{
+                        label: 'Antal händelser',
+                        data: Object.values(eventCounts),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Update event list
+            const eventList = document.getElementById('event-list');
+            eventList.innerHTML = filteredEvents
+                .slice(-5)
+                .reverse()
+                .map(event => `
+                    <div class="event-item">
+                        <strong>${event.event}</strong>
+                        <span>${new Date(event.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                `)
+                .join('');
+        }
+
+        document.getElementById('refresh-dashboard').addEventListener('click', updateDashboard);
+        document.getElementById('event-filter').addEventListener('change', updateDashboard);
+
+        // Initial dashboard update
+        updateDashboard();
+    </script>
 </body>
 </html> 

@@ -16,6 +16,11 @@
     <!-- Initialize dataLayer -->
     <script>
         window.dataLayer = window.dataLayer || [];
+        // Debug mode for GTM
+        window.dataLayer.push = function() {
+            console.log('dataLayer Push:', arguments[0]);
+            return Array.prototype.push.apply(this, arguments);
+        };
     </script>
     
     <!-- Analytics Script (load before page content) -->
@@ -70,5 +75,36 @@
     <footer>
         <p>&copy; 2025 Web Analytics Demo</p>
     </footer>
+
+    <!-- Debug Panel -->
+    <div id="debug-panel" style="position: fixed; bottom: 0; right: 0; background: rgba(0,0,0,0.8); color: white; padding: 10px; font-family: monospace; max-height: 200px; overflow-y: auto; display: none;">
+        <h3>Debug Panel</h3>
+        <button onclick="toggleDebugPanel()">Toggle Debug</button>
+        <button onclick="showDataLayerHistory()">Show dataLayer</button>
+        <div id="debug-content"></div>
+    </div>
+
+    <script>
+        // Debug panel functionality
+        function toggleDebugPanel() {
+            const panel = document.getElementById('debug-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Log all dataLayer pushes to debug panel
+        const originalPush = window.dataLayer.push;
+        window.dataLayer.push = function() {
+            const debugContent = document.getElementById('debug-content');
+            if (debugContent) {
+                const entry = document.createElement('div');
+                entry.textContent = JSON.stringify(arguments[0], null, 2);
+                debugContent.insertBefore(entry, debugContent.firstChild);
+                if (debugContent.children.length > 10) {
+                    debugContent.removeChild(debugContent.lastChild);
+                }
+            }
+            return originalPush.apply(this, arguments);
+        };
+    </script>
 </body>
 </html>
